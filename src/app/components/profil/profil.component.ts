@@ -16,6 +16,8 @@ export class ProfilComponent implements OnInit {
   user?: Utilisateur;
   faHeart = faHeart;
   faXmark = faXmark;
+  isEditMode: boolean = false;
+
 
   constructor (
     private route: ActivatedRoute,
@@ -27,6 +29,7 @@ export class ProfilComponent implements OnInit {
     // if (!this.users) {
     //   this.getUsers(this.users);
     // }
+    this.getProfil();
     this.getUsers();
   }
 
@@ -45,13 +48,24 @@ export class ProfilComponent implements OnInit {
     //   this.appService.getUsers(users.id).subscribe((users) => {
     //     this.users = users;
     //   });
-    // })
+  }
 
-    this.appService.getUsers(this.id).subscribe((user) => {
+  toggleEditMode() {
+    this.isEditMode = !this.isEditMode;
+  }
+
+  getProfil() {
+    this.appService.getUsers(14).subscribe((user) => {
       this.user = user;
-      console.log(user)
     });
   }
-}
 
+  updateProfil() {
+    this.appService.updateProfil(this.user!).subscribe({
+      error: (error: any) => console.error('Erreur de mise à jour du label', error),
+      complete: () => console.log('Label mis à jour avec succès'),
+    });
+  }
+  
+}
 

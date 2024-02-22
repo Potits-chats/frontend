@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, map, share, take } from 'rxjs';
-import { Chat, Favori } from '../interfaces/interfaces';
+import { Chat, Favori, Utilisateur } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppService {
+  updateProfil(arg0: Utilisateur) {
+    return null;
+  }
   getbyId(id: number) {
     throw new Error('Method not implemented.');
   }
@@ -23,6 +26,7 @@ export class AppService {
       take(1)
     );
   }
+
 
   getAllCats(): Observable<Chat[]> {
     console.log('🚀 ~ AppService ~ getAllCats ~ this.api ICI :', this.api);
