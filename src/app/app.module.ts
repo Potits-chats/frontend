@@ -39,11 +39,14 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { TchatComponent } from './components/tchat/tchat.component';
 import { TchatIconComponent } from './components/tchat/tchat-icon/tchat-icon.component';
 import { TchatMessageComponent } from './components/tchat/tchat-message/tchat-message.component';
+import { CheckboxModule } from 'primeng/checkbox';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 import { FileUploadModule } from 'primeng/fileupload';
 import { AccordionModule } from 'primeng/accordion';
 
 import { ToastModule } from 'primeng/toast';
+import { CreationPostComponent } from './components/creation-post/creation-post.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +70,7 @@ import { ToastModule } from 'primeng/toast';
     TchatComponent,
     TchatIconComponent,
     TchatMessageComponent,
+    CreationPostComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,6 +85,8 @@ import { ToastModule } from 'primeng/toast';
     FontAwesomeModule,
     FileUploadModule,
     ToastModule,
+    RadioButtonModule,
+    CheckboxModule,
     AccordionModule,
     // Auth0 configuration
     AuthModule.forRoot({

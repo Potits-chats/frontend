@@ -1,0 +1,213 @@
+<div style="text-align: -webkit-center">
+    <h1>Ajoutez une petite boule de poils à la famille !</h1>
+    <div class="col-12">
+        <form [formGroup]="chatForm" (ngSubmit)="onSubmit()" class="w-full max-w-lg">
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Nom
+                    <span class="text-red-500 text-xs mt-1" 
+                        *ngIf="chatForm.get('nom')?.errors?.['required']">*
+                    </span> 
+                    </label>
+                    <input formControlName="nom" name="nom" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="nom" type="text">
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Age
+                    <span class="text-red-500 text-xs mt-1" 
+                        *ngIf="chatForm.get('age')?.errors?.['required']">*
+                    </span> 
+                    </label>
+                    <input formControlName="age" name="age" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="age" type="text">
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Date de naissance
+                    <span class="text-red-500 text-xs mt-1" 
+                        *ngIf="chatForm.get('nom')?.errors?.['required']">*
+                    </span>
+                    </label>
+                    <input formControlName="dateNaissance" name="age" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="age" type="date">
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Vaccinations
+                    </label>
+                    <div class="flex flex-wrap gap-3">
+                        <div class="flex align-items-center">
+                            <p-radioButton class="orange" name="vaccinations" value="Oui" formControlName="vaccinations" inputId="oui"></p-radioButton>
+                            <label for="oui" class="ml-2">Oui</label>
+                        </div>
+                        
+                        <div class="flex align-items-center">
+                            <p-radioButton class="orange" name="vaccinations" value="Non" formControlName="vaccinations" inputId="non"></p-radioButton>
+                            <label for="non" class="ml-2">Non</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Sexe
+                    </label>
+                    <div class="flex flex-wrap gap-3">
+                        <div class="flex align-items-center">
+                            <p-radioButton class="orange" name="sexe" value="MALE" formControlName="sexe" inputId="sexe1"></p-radioButton>
+                            <label for="Mâle" class="ml-2">Mâle</label>
+                        </div>
+                        
+                        <div class="flex align-items-center">
+                            <p-radioButton class="orange" name="sexe" value="FEMELLE" formControlName="sexe" inputId="sexe2"></p-radioButton>
+                            <label for="Femelle" class="ml-2">Femelle</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Race
+                    </label>
+                    <input formControlName="race" [(ngModel)]="chat" name="race" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="race" type="text">
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Couleur
+                    </label>
+                    <input formControlName="couleur" [(ngModel)]="chat" name="couleur" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="couleur" type="couleur">
+                </div>
+            </div>
+            <div class="flex align-items-center gap-1">
+                <p-checkbox name="ententeChats" value="Entente chats" formControlName="ententeChat" [(ngModel)]="chat" inputId="ententeChats"></p-checkbox>
+                <label for="ententeChats">Entente chats</label>
+            </div>
+            
+            <div class="flex align-items-center gap-1">
+                <p-checkbox name="ententeChien" value="Entente chiens" formControlName="ententeChien" [(ngModel)]="chat" inputId="ententeChien"></p-checkbox>
+                <label for="ententeChien">Entente chiens</label>
+            </div>
+            
+            <div class="flex align-items-center gap-1">
+                <p-checkbox name="ententeEnfant" value="Entente enfants" formControlName="ententeEnfant" [(ngModel)]="chat" inputId="ententeEnfant"></p-checkbox>
+                <label for="ententeEnfant">Entente enfants</label>
+            </div>
+            <div class="w-full px-3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                Lieu de vie
+                </label>
+                <div class="flex flex-wrap gap-3">
+                    <div class="flex align-items-center">
+                        <p-radioButton class="orange" name="typeFoyerMaison" value="Maison" formControlName="typeFoyerMaison" [(ngModel)]="chat" inputId="sexe1"></p-radioButton>
+                        <label for="Maison" class="ml-2">Maison</label>
+                    </div>
+                    
+                    <div class="flex align-items-center">
+                        <p-radioButton class="orange" name="typeFoyerAppartement" formControlName="typeFoyerAppartement" value="Appartement" [(ngModel)]="chat" inputId="sexe2"></p-radioButton>
+                        <label for="Appartement" class="ml-2">Appartement</label>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Email de contact
+                    </label>
+                    <input [(ngModel)]="chat" formControlName="contactEmail" name="contactEmail" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="email" type="email">
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Numéro de téléphone
+                    </label>
+                    <input [(ngModel)]="chat" formControlName="contactTel" name="contactTel" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="telephone" type="tel">
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Url du site web
+                    </label>
+                    <input [(ngModel)]="chat" formControlName="contactUrl" name="contactUrl" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="url" type="url">
+                </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Association
+                    <span class="text-red-500 text-xs mt-1" 
+                        *ngIf="chatForm.get('association')?.errors?.['required']">*
+                    </span>
+                    </label>
+                    <input [(ngModel)]="chat" formControlName="association" name="association" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="email" type="text">
+                </div>
+            </div>
+            <!-- <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full px-3">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
+                    Autre informations
+                    </label>
+                    <input class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="email" type="email">
+                </div>
+            </div> -->
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="max-w-screen-lg mt-8 md:mx-auto lg:max-w-screen-lg md:mt-12">
+                    <label class="mb-2 block text-sm font-medium leading-5 text-gray-900">Description :</label>
+                    <p class="text-base text-gray-700" [innerHTML]="sanitizeHtml(chat?.description ?? '')">
+                    </p>
+            
+                    <editor modelEvents="change input undo redo setcontent closewindow"
+                        ignoreEvents="onMouseEnter,onMouseLeave,onMouseOut,onMouseMove"
+                        [(ngModel)]="chat" formControlName="description" [init]="{
+                  
+                  base_url: '/tinymce',
+                  height: 500,
+                  menubar: false,
+                  plugins: [
+                  ],
+                  tinycomments_mode: 'embedded',
+                  tinycomments_author: 'Author name',
+                  
+                  mergetags_list: [
+                    { value: 'First.Name', title: 'First Name' },
+                    { value: 'Email', title: 'Email' },
+                  ],
+                  
+                  toolbar:
+                    'undo redo | formatselect | bold italic backcolor | \
+                    alignleft aligncenter alignright alignjustify | \
+                    bullist numlist outdent indent | removeformat | help'
+                }"></editor>
+                </div>
+            </div>
+            <div class="card flex justify-content-center">
+                <p-fileUpload name="photos[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept="image/*" [maxFileSize]="1000000">
+                    <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                            <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                        </ul>
+                    </ng-template>
+                </p-fileUpload>
+            </div>
+            <div class="md:flex md:items-center">
+            <div class="md:w-1/3">
+                <button class="shadow bg-orange-600 hover:bg-orange-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit">
+                Poster
+                </button>
+            </div>
+            <div class="md:w-2/3"></div>
+            </div>
+            
+        </form>
+    </div>
+</div>
