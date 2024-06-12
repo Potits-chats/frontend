@@ -31,6 +31,9 @@ jobs:
             node_modules
             */*/node_modules
 
+      - name: Debug node_modules
+        run: ls node_modules
+
       - name: "🔧 install npm@latest"
         run: npm i -g npm@latest
 
@@ -55,6 +58,9 @@ jobs:
           path: |
             node_modules
             */*/node_modules
+
+      - name: Debug node_modules
+        run: ls node_modules
 
       - name: "🔧 setup node"
         uses: actions/setup-node@v2.1.5
