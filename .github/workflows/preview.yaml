@@ -1,19 +1,52 @@
-name: Vercel Preview Deployment
+name: Vercel Preview Deployment and Lighthouse Check
+
 env:
   VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_PROTECTION_BYPASS: ${{ secrets.VERCEL_PROTECTION_BYPASS }}
+
 on:
   push
+
 jobs:
   Deploy-Preview:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
+        
       - name: Pull Vercel Environment Information
         run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        
       - name: Build Project Artifacts
         run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        id: vercel_deploy
+        run: |
+          DEPLOY_URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }} --confirm)
+          echo "preview-url=${DEPLOY_URL}" >> $GITHUB_ENV
+        continue-on-error: true
+        
+      - name: Lighthouse Check
+        id: lighthouseCheck
+        uses: foo-software/lighthouse-check-action@master
+        with:
+          fooApiToken: ${{ secrets.LIGHTHOUSE_CHECK_API_TOKEN }}
+          urlsJson: '[["997078d5-d312-4adc-bf20-c8b526eafb4c", "${{ env.preview-url }}"]]'
+          extraHeaders: '{ "x-vercel-protection-bypass": "${{ secrets.VERCEL_PROTECTION_BYPASS }}" }'
+          prCommentEnabled: true
+          gitAuthor: ${{ github.actor }}
+          gitBranch: ${{ github.ref }}
+          sha: ${{ github.sha }}
+          
+      - name: Verify Lighthouse Check results
+        uses: foo-software/lighthouse-check-status-action@master
+        with:
+          lighthouseCheckResults: ${{ steps.lighthouseCheck.outputs.lighthouseCheckResults }}
+          minAccessibilityScore: "70"
+          minBestPracticesScore: "50"
+          minPerformanceScore: "30"
+          minSeoScore: "50"
