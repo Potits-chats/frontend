@@ -37,6 +37,7 @@ import { AppService } from './services/app.service';
 export class AppComponent {
   message = '';
   name = '';
+  title = 'potits-chats';
 
   constructor(private appService: AppService) {}
 
