@@ -52,6 +52,7 @@ export class CreationPostComponent {
   }
   
   onSubmit() {
+    console.log('Form Data:', this.chatForm.valid);
     if (this.chatForm.valid) {
       console.log('Form Data:', this.chatForm.value);
       this.appService.createChat(this.chatForm.value).subscribe({

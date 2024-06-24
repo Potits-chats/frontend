@@ -76,7 +76,7 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                     Race
                     </label>
-                    <input formControlName="race" [(ngModel)]="chat" name="race" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="race" type="text">
+                    <input formControlName="race" name="race" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="race" type="text">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
@@ -84,21 +84,21 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                     Couleur
                     </label>
-                    <input formControlName="couleur" [(ngModel)]="chat" name="couleur" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="couleur" type="couleur">
+                    <input formControlName="couleur" name="couleur" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="couleur" type="couleur">
                 </div>
             </div>
             <div class="flex align-items-center gap-1">
-                <p-checkbox name="ententeChats" value="Entente chats" formControlName="ententeChat" [(ngModel)]="chat" inputId="ententeChats"></p-checkbox>
+                <p-checkbox name="ententeChats" value="Entente chats" formControlName="ententeChat" inputId="ententeChats"></p-checkbox>
                 <label for="ententeChats">Entente chats</label>
             </div>
             
             <div class="flex align-items-center gap-1">
-                <p-checkbox name="ententeChien" value="Entente chiens" formControlName="ententeChien" [(ngModel)]="chat" inputId="ententeChien"></p-checkbox>
+                <p-checkbox name="ententeChien" value="Entente chiens" formControlName="ententeChien" inputId="ententeChien"></p-checkbox>
                 <label for="ententeChien">Entente chiens</label>
             </div>
             
             <div class="flex align-items-center gap-1">
-                <p-checkbox name="ententeEnfant" value="Entente enfants" formControlName="ententeEnfant" [(ngModel)]="chat" inputId="ententeEnfant"></p-checkbox>
+                <p-checkbox name="ententeEnfant" value="Entente enfants" formControlName="ententeEnfant" inputId="ententeEnfant"></p-checkbox>
                 <label for="ententeEnfant">Entente enfants</label>
             </div>
             <div class="w-full px-3">
@@ -122,7 +122,7 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                     Email de contact
                     </label>
-                    <input [(ngModel)]="chat" formControlName="contactEmail" name="contactEmail" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="email" type="email">
+                    <input formControlName="contactEmail" name="contactEmail" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="email" type="email">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
@@ -130,7 +130,7 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                     Numéro de téléphone
                     </label>
-                    <input [(ngModel)]="chat" formControlName="contactTel" name="contactTel" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="telephone" type="tel">
+                    <input formControlName="contactTel" name="contactTel" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="telephone" type="tel">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
@@ -138,7 +138,7 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                     Url du site web
                     </label>
-                    <input [(ngModel)]="chat" formControlName="contactUrl" name="contactUrl" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="url" type="url">
+                    <input formControlName="contactUrl" name="contactUrl" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="url" type="url">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-6">
@@ -149,7 +149,7 @@
                         *ngIf="chatForm.get('association')?.errors?.['required']">*
                     </span>
                     </label>
-                    <input [(ngModel)]="chat" formControlName="association" name="association" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="email" type="text">
+                    <input formControlName="association" name="association" class="appearance-none block w-full text-gray-700 border border-orange-300 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-orange-500" id="email" type="text">
                 </div>
             </div>
             <!-- <div class="flex flex-wrap -mx-3 mb-6">
@@ -168,7 +168,7 @@
             
                     <editor modelEvents="change input undo redo setcontent closewindow"
                         ignoreEvents="onMouseEnter,onMouseLeave,onMouseOut,onMouseMove"
-                        [(ngModel)]="chat" formControlName="description" [init]="{
+                         formControlName="description" [init]="{
                   
                   base_url: '/tinymce',
                   height: 500,
@@ -201,7 +201,7 @@
             </div>
             <div class="md:flex md:items-center">
             <div class="md:w-1/3">
-                <button class="shadow bg-orange-600 hover:bg-orange-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit">
+                <button [disabled]="chatForm.invalid" class="shadow bg-orange-600 hover:bg-orange-700 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="submit">
                 Poster
                 </button>
             </div>
