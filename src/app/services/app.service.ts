@@ -147,4 +147,19 @@ export class AppService {
       take(1)
     );
   }
+
+
+  // username et message
+  sendMessage( username: String, message: String) : Observable<any> {
+    return this.http.post(this.api + '/conversations', 
+    {
+      username: username,
+      message: message
+    }
+    ).pipe(
+      map((res: any) => res),
+      share(),
+      take(1)
+    );
+  }
 }
