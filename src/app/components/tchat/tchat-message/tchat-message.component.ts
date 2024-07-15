@@ -1,75 +1,60 @@
 import { Component } from '@angular/core';
 import { AuthService } from '@auth0/auth0-angular';
-import { Utilisateur } from '../../../interfaces/interfaces';
+import { Message, Utilisateur } from '../../../interfaces/interfaces';
 import { WebSocketService } from '../../../services/web-socket.service';
 import { AppService } from '../../../services/app.service';
+import Pusher from 'pusher-js';
+
 
 @Component({
   selector: 'app-tchat-message',
   templateUrl: './tchat-message.component.html',
   styleUrls: ['./tchat-message.component.scss']
 })
-export class TchatMessageComponent {
-  user?: Utilisateur;
 
-  messages : any  = [
-    // { content: "Salut je suis intérrésé par le chat Tigrou", type: 'incoming'},
-    // { content: "Bonjour, très bien il est disponible en visite aujoudui", type: 'outgoing'},
-    // { content: "Ok j'arrive", type: 'incoming'},
+
+export class TchatMessageComponent {
+  username: String = '';
+  message = '';
+
+  
+  messages: Message[] = [
+    // exemple de données initiales
+    { username: 'Alice', message: 'Bonjour' },
+    { username: 'Bob', message: 'Comment ça va ?' }
   ];
 
-  newMessage: string = '';
-
-  currentRoom: string = '';
-  
-
   constructor(
-    private webSocketService: WebSocketService,
     public auth: AuthService,
     private appService: AppService,
     ) {
     this.auth.user$.subscribe((user) => {
-      if (user) {
-        this.currentRoom = '1_3'; // user to asso
-        this.joinRoom(this.currentRoom);
+      if (user && user.name){
+        this.username = user.name;
       }
     });
   }
 
   
   ngOnInit() {
-    this.getMessages();
-  }
+    Pusher.logToConsole = true;
 
-
-  joinRoom(room: string): void {
-    this.webSocketService.joinRoom(room);
-    this.listenForMessages();
-  }
-
-  sendMessage(): void {
-    if (this.newMessage.trim() !== '') {
-      this.webSocketService.sendMessage(this.currentRoom, this.newMessage); // Envoyer un message à la salle actuelle
-      this.messages.push({ content: this.newMessage, type: 'outgoing'});
-      this.newMessage = '';
-    }
-  }
-
-  getMessages(): void {
-    this.appService.getAllConversationByUser(1).subscribe((convs) => {
-      console.log(' convs:', convs);
+    const pusher = new Pusher('29fdd82357f17b9e1f8e', {
+      cluster: 'eu'
     });
+
+    const channel = pusher.subscribe('chat');
+    channel.bind('message', (data: any) => this.messages.push(data));
   }
 
-  private listenForMessages(): void {
-    this.webSocketService.onMessage((message: string) => {
-      this.messages.push({ content: message, type: 'incoming'});
-      // Note: Avec Socket.io, onMessage est un observable qui continue de recevoir des messages,
-      // donc pas besoin de rappeler listenForMessages() ici
-    });
+  submit(): void {
+    this.appService.sendMessage(this.username, this.message).subscribe(
+      () => this.message = ''
+    );
   }
 
-
-
+  handleMessageChange(event: Event): void {
+    this.message = (event.target as HTMLInputElement).value;
+  }
 
 }
