@@ -133,6 +133,10 @@ export interface PageEvent {
 
 
 export interface Message {
-  username: string;
-  message: string;
+  contenu: string
+  conversationsId : number;
+  createdAt: string
+  id: number
+  isAuthor: boolean
+  utilisateursId: number
 }

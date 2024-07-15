@@ -75,6 +75,7 @@ const routes: Routes = [
   {
     path: 'tchat',
     component: TchatComponent,
+    canActivate: [AuthGuard],
   },
   {
     path : 'callback',
