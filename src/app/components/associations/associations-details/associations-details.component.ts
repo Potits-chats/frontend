@@ -4,7 +4,7 @@ import { Association, Chat, Sexe } from '../../../interfaces/interfaces';
 import { AppService } from '../../../services/app.service';
 import { ActivatedRoute } from '@angular/router';
 import { faTrash, faUpload } from '@fortawesome/free-solid-svg-icons';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '@auth0/auth0-angular';
 import { UserService } from '../../../services/user.service';
@@ -24,6 +24,7 @@ export class AssociationsDetailsComponent {
   isEditMode: boolean = false;
   isAuthenticated: boolean = false;
   private subscriptions = new Subscription();
+  safeUrlGoogleMapsEmbled: SafeResourceUrl | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -56,7 +57,9 @@ export class AssociationsDetailsComponent {
       if (params['id']) {
         this.appService.getByIdAsso(params['id']).subscribe((asso) => {
           this.asso = asso;
-          console.log('asso:', asso);
+          if (this.asso.urlGoogleMapsEmbled){
+            this.safeUrlGoogleMapsEmbled = this.sanitizer.bypassSecurityTrustResourceUrl(this.asso.urlGoogleMapsEmbled);
+          }
         });
       }
     });
@@ -81,7 +84,7 @@ export class AssociationsDetailsComponent {
       },
     });
   }
-
+  
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }

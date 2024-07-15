@@ -128,12 +128,13 @@
     </div>
 
     <!-- Map integration to make dynamic -->
-    <!-- <div class="max-w-screen-lg mt-8 md:mx-auto lg:max-w-screen-lg md:mt-12">
+    <div *ngIf="safeUrlGoogleMapsEmbled" class="max-w-screen-lg mt-8 md:mx-auto lg:max-w-screen-lg md:mt-12">
         <label class="mb-2 block text-sm font-medium leading-5 text-gray-900">
-            Adresse :
+          Adresse :
         </label>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d369583.3585773802!2d0.7940654177299492!3d43.64047001863679!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12aea52dc1fad8e5%3A0x18307a79d79383ea!2sLes%20Chats%20de%20l&#39;Espoir%20du%2031%20(Blagnac%20-%20Toulouse)!5e0!3m2!1sfr!2sfr!4v1717587656821!5m2!1sfr!2sfr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div> -->
+        <iframe [src]="safeUrlGoogleMapsEmbled" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+      
 
     <button (click)="updateAsso()" *ngIf="isEditMode"
         class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">

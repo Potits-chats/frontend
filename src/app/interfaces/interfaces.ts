@@ -76,6 +76,7 @@ export interface Association {
   description?: string;
   shortDescription?: string;
   tel?: string;
+  urlGoogleMapsEmbled?: string;
   chats: Chat[];
   utilisateurs: Utilisateur[];
   photos: Photo[];
