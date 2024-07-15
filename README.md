@@ -1,5 +1,8 @@
 # PotitsChats
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/Potits-chats/frontend/badge)](https://scorecard.dev/viewer/?uri=github.com/Potits-chats/frontend)
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.5.
 
 ## Development server
