@@ -131,3 +131,9 @@ export interface PageEvent {
   page: number;
   pageCount: number;
 }
+
+
+export interface Message {
+  username: string;
+  message: string;
+}
