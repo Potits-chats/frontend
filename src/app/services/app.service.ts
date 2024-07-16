@@ -148,31 +148,25 @@ export class AppService {
     );
   }
 
-  sendMessage(conversationId: number, userId: number, content: string) {
-    return this.http.post(`${this.api}/conversations/${conversationId}/messages`, {
+  sendMessage(userId: number, associationId: number, content: string, isUserSender: boolean) {
+    return this.http.post(`${this.api}/messages`, {
       userId,
+      associationId,
       content,
+      isUserSender,
     }).pipe(
       map((res: any) => res),
       share(),
       take(1)
     );
   }
-
-  getMessages(conversationId: number) {
-    return this.http.get(`${this.api}/conversations/${conversationId}/messages`).pipe(
+  
+  getMessages(userId: number, associationId: number) {
+    return this.http.get(`${this.api}/messages/${associationId}/${userId}`).pipe(
       map((res: any) => res),
       share(),
       take(1)
-    );;
-  }
-
-  getConversations(userId: number) {
-    return this.http.get(`${this.api}/conversations/user/${userId}`).pipe(
-      map((res: any) => res),
-      share(),
-      take(1)
-    );;
+    );
   }
 
 

@@ -125,11 +125,15 @@ import { PaginatorModule } from 'primeng/paginator';
             uri: `${environment.urlAPI}/*`,
             httpMethod: HttpMethod.Patch,
           },
-           // Protéger la route GET /v1/conversations/1/messages
+           // Protéger la route GET messages
           {
-            uri: `${environment.urlAPI}/conversations/*`,
+            uri: `${environment.urlAPI}/users/infos`,
             httpMethod: HttpMethod.Get,
           },
+          {
+            uri: `${environment.urlAPI}/messages/*`,
+            httpMethod: HttpMethod.Get,
+          }
         ],
       },
     }),
