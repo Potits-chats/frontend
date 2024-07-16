@@ -73,6 +73,11 @@ const routes: Routes = [
     component: CguComponent,
   },
   {
+    path: 'tchat/:id',
+    component: TchatComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'tchat',
     component: TchatComponent,
     canActivate: [AuthGuard],

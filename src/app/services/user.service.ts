@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, share, take } from 'rxjs';
 import { AuthService } from '@auth0/auth0-angular';
-import { Conversation, UserRole } from '../interfaces/interfaces';
+import { Conversation, UserRole, Utilisateur } from '../interfaces/interfaces';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -13,6 +13,7 @@ export class UserService {
   public isAsso = false;
   public isUser = false;
   api = environment.urlAPI;
+  public user: Utilisateur | null = null;
 
   constructor(
     private http: HttpClient,
@@ -30,6 +31,10 @@ export class UserService {
         }
         this.isAsso = this.isRole(roles, UserRole.Asso);
         this.isUser = true;
+
+        this.getMeInfo().subscribe((res) => {
+          this.user = res;
+        });
       }
     });
   }

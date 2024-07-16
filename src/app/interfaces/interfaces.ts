@@ -142,4 +142,5 @@ export interface Conversation {
   img?: string;
   messages: Message[];
   photos?: Photo[];
+  associationId?: number;
 }
