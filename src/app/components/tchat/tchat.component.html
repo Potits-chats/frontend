@@ -16,29 +16,34 @@
 
     <!-- Contact List -->
     <div class="overflow-y-auto h-screen p-3 mb-9 pb-20 dark:bg-gray-700 dark:text-white">
-      <div *ngFor="let conversation of conversations"
-           (click)="onSelectConversation(conversation)"
-           class="flex items-center mb-4 cursor-pointer p-2 rounded-md dark:hover:bg-gray-600"
-           [ngClass]="{
-             'bg-gray-100 dark:bg-gray-600': selectedConversation?.id === conversation.id,
-             'hover:bg-gray-100': selectedConversation?.id !== conversation.id
-           }">
-      <div *ngIf="conversation.img || conversation?.photos" class="w-12 h-12 bg-gray-300 rounded-full mr-3">
-        <!-- lazy -->
-        <img [src]="conversation?.img || conversation!.photos![0].url" alt="User Avatar" class="w-12 h-12 rounded-full" loading="lazy">
-      </div>
+      <div *ngIf="conversations.length > 0; else noConversations">
+        <div *ngFor="let conversation of conversations"
+             (click)="onSelectConversation(conversation)"
+             class="flex items-center mb-4 cursor-pointer p-2 rounded-md dark:hover:bg-gray-600"
+             [ngClass]="{
+               'bg-gray-100 dark:bg-gray-600': selectedConversation?.id === conversation.id,
+               'hover:bg-gray-100': selectedConversation?.id !== conversation.id
+             }">
+          <div *ngIf="conversation.img || conversation?.photos" class="w-12 h-12 bg-gray-300 rounded-full mr-3">
+            <!-- lazy -->
+            <img [src]="conversation?.img || conversation!.photos![0].url" alt="User Avatar" class="w-12 h-12 rounded-full" loading="lazy">
+          </div>
 
-        <div class="flex-1">
-          <h3 class="text-lg font-semibold">{{ conversation.nom }}</h3>
-          <p class="text-gray-600 dark:text-white">{{ conversation.messages[0].contenu || 'No message yet' }}</p>
+          <div class="flex-1">
+            <h3 class="text-lg font-semibold">{{ conversation.nom }}</h3>
+            <p class="text-gray-600 dark:text-white">{{ conversation.messages[0].contenu || 'No message yet' }}</p>
+          </div>
         </div>
       </div>
+      <ng-template #noConversations>
+        <p class="text-center text-gray-600 dark:text-gray-300">No conversations available.</p>
+      </ng-template>
     </div>
   </div>
 
   <!-- Main Content -->
   <div class="flex-1 relative">
-    <app-tchat-message [selectedConversation]="selectedConversation"></app-tchat-message>
+    <app-tchat-message *ngIf="utilisateur" [selectedConversation]="selectedConversation" [utilisateur]="utilisateur"></app-tchat-message>
     <button id="menuButton" (click)="toggleMenu()" class="absolute top-4 left-4 focus:outline-none bg-orange-600 text-white p-2 rounded-md">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 pointer-events-none" viewBox="0 0 20 20" fill="currentColor">
         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />

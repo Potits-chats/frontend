@@ -2,9 +2,8 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/cor
 import { AppService } from '../../../services/app.service';
 import { AuthService } from '@auth0/auth0-angular';
 import { WebSocketService } from '../../../services/web-socket.service';
-import { Message } from '../../../interfaces/interfaces';
+import { Message, Utilisateur } from '../../../interfaces/interfaces';
 import { Conversation } from '../../../interfaces/interfaces';
-import { UserService } from '../../../services/user.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -15,59 +14,83 @@ import { ActivatedRoute } from '@angular/router';
 export class TchatMessageComponent implements OnInit, OnChanges {
 
   @Input() selectedConversation: Conversation | null = null;
-  associationId: number = 1; // Remplacez par l'ID de l'association appropriée
-  idFromUrl: number | null = null;
-  isAssociation = false;
-  utilisateurId: number = 1; // Remplacez par l'ID de l'utilisateur approprié
+  @Input() utilisateur: Utilisateur | null = null;
+  @Input() idFromUrl: number | null = null;
+
+  associationId: number | undefined = undefined;
+  utilisateurId: number | undefined = undefined;
   message = '';
   messages: Message[] = [];
 
   constructor(
     public auth: AuthService,
     private appService: AppService,
-    private webSocketService: WebSocketService,
-    private route: ActivatedRoute
+    private webSocketService: WebSocketService
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const idFromUrl = params['id'];
-      if (idFromUrl) {
-        this.idFromUrl = +idFromUrl;
-        this.associationId = this.idFromUrl;
+    this.messages = [];
+    if (this.idFromUrl) {
+      this.associationId = this.idFromUrl;
+      this.appService.getByIdAsso(this.idFromUrl).subscribe((association) => {
+        this.selectedConversation = association as unknown as Conversation;
+        this.associationId = this.selectedConversation!.id;
+        this.utilisateurId = this.utilisateur!.id;
         this.loadMessages();
-        this.appService.getByIdAsso(this.idFromUrl).subscribe((association) => {
-          this.selectedConversation = association as unknown as Conversation;
-        });
-      }
-    });
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['selectedConversation'] && this.selectedConversation) {
-      this.isAssociation = !!this.selectedConversation.img ? true : false;
-      console.log('🚀 ~ TchatMessageComponent ~ ngOnChanges ~ this.isAssociation:', this.isAssociation);
-      this.associationId = this.selectedConversation.id;
+      });
+    }else {
+      this.calculateIds();
       this.loadMessages();
     }
   }
 
-  loadMessages(): void {
-    if (this.selectedConversation || this.idFromUrl) {
-      this.appService.getMessages(this.utilisateurId, this.associationId).subscribe((messages: Message[]) => {
-        this.messages = messages;
-        console.log('🚀 ~ TchatMessageComponent ~ this.appService.getMessages ~ this.messages:', this.messages);
-      });
-      // Subscribe to WebSocket messages
-      this.webSocketService.subscribeToChannel(`association-${this.associationId}-user-${this.utilisateurId}`, 'new-message', (data: Message) => {
-        this.messages.push(data);
-      });
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['selectedConversation'] && this.selectedConversation) {
+      this.messages = [];
+      this.calculateIds();
+      this.loadMessages();
     }
   }
 
+  calculateIds(): void {
+    if (this.utilisateur) {
+      if (this.utilisateur.isAssociation) {
+        if (this.selectedConversation?.id) {
+          this.utilisateurId = this.selectedConversation.id;
+        }
+        this.associationId = this.utilisateur.associationId;
+      } else {
+        this.utilisateurId = this.utilisateur.id;
+        if (this.selectedConversation?.id) {
+          this.associationId = this.selectedConversation.id;
+        }
+      }
+    }
+  }
+
+  loadMessages(): void {
+    if (this.utilisateur && this.utilisateurId && this.associationId) {
+      this.appService.getMessages(this.utilisateurId!, this.associationId).subscribe((messages: Message[]) => {
+        this.messages = messages;
+      });
+      this.listenForNewMessages();
+    }
+  }
+
+  listenForNewMessages(): void {
+    this.webSocketService.subscribeToChannel(`association-${this.associationId}-user-${this.utilisateurId}`, 'new-message', (data: Message) => {
+      if (!this.messages.some(message => message.id === data.id)) {
+        this.messages.push(data);
+      }
+    })
+  };
+    
+
   submit(): void {
-    this.appService.sendMessage(this.utilisateurId, this.associationId, this.message, !this.isAssociation).subscribe(() => {
-      this.message = '';
-    });
+    if (this.utilisateurId && this.associationId) {
+      this.appService.sendMessage(this.utilisateurId, this.associationId, this.message, !this.utilisateur?.isAssociation).subscribe(() => {
+        this.message = '';
+      });
+    }
   }
 }

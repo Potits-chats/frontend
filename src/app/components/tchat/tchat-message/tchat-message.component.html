@@ -1,10 +1,16 @@
-<div *ngIf="auth.user$ | async as user">
+<div *ngIf="utilisateur">
   <!-- Chat Header -->
   <header class="bg-white p-4 text-gray-700 dark:border-t dark:border-orange-900 dark:bg-gray-800 dark:text-white">
-    <a *ngIf="!isAssociation && selectedConversation" [routerLink]="'/associations/'+selectedConversation!.id" class="hover:text-orange-800">
-      <h1 class="text-2xl font-semibold text-center">{{selectedConversation!.nom}}</h1>
-    </a>
-    <h1 *ngIf="isAssociation && selectedConversation" class="text-2xl font-semibold text-center">{{selectedConversation!.nom}}</h1>
+    <h1 *ngIf="!utilisateur!.isAssociation && selectedConversation" class="text-2xl font-semibold text-center flex items-center justify-center space-x-2">
+      <a [routerLink]="'/associations/'+selectedConversation!.id" class="hover:text-orange-800">
+        {{selectedConversation!.nom}}
+      </a>
+      <div *ngIf="!utilisateur!.isAssociation" class="flex items-center justify-center mr-2 hidden sm:flex">
+        <img alt="..." [src]="selectedConversation!.photos![0].url" class="w-16 h-16 rounded-full object-cover">
+      </div>
+    </h1>    
+    <h1 *ngIf="utilisateur!.isAssociation && selectedConversation" class="text-2xl font-semibold text-center">{{selectedConversation!.nom}}</h1>
+    <h1 *ngIf="!selectedConversation" class="text-2xl font-semibold text-center">Sélectionnez une conversation</h1>
   </header>
 
   <!-- Chat Messages -->
@@ -12,28 +18,30 @@
     <div *ngIf="messages && messages.length > 0; else noMessages">
       <div *ngFor="let msg of messages">
         <!-- Receveur -->
-        <div *ngIf="!msg.isUserSender && !isAssociation || msg.isUserSender && isAssociation" class="flex mb-4 cursor-pointer">
-          <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-            <img alt="..." [src]="selectedConversation?.img || selectedConversation!.photos![0].url" class="w-8 h-8 rounded-full">
+        <div *ngIf="!msg.isUserSender && !utilisateur!.isAssociation || msg.isUserSender && utilisateur!.isAssociation" class="flex mb-4 cursor-pointer items-start">
+          <div class="flex-shrink-0 mr-2 hidden sm:flex">
+            <img alt="..." [src]="selectedConversation?.img || selectedConversation!.photos![0].url" class="w-8 h-8 rounded-full object-cover">
           </div>
-          <div class="flex max-w-96 bg-white rounded-lg p-3 gap-3">
-            <p class="text-gray-700">{{ msg.contenu + ' (receveur)' }}</p>
+          <div class="flex flex-col bg-white rounded-lg p-3 gap-3 max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl min-w-0">
+            <p class="text-gray-700 break-words">{{ msg.contenu }}</p>
           </div>
         </div>
         <!-- L'envoyeur -->
-        <div *ngIf="msg.isUserSender && !isAssociation || !msg.isUserSender && isAssociation" class="flex justify-end mb-4 cursor-pointer">
-          <div class="flex max-w-96 bg-orange-600 text-white rounded-lg p-3 gap-3">
-            <p>{{ msg.contenu + ' (envoyeur)' }}</p>
+        <div *ngIf="msg.isUserSender && !utilisateur!.isAssociation || !msg.isUserSender && utilisateur!.isAssociation" class="flex justify-end mb-4 cursor-pointer items-start">
+          <div class="flex flex-col bg-orange-600 text-white rounded-lg p-3 gap-3 max-w-full sm:max-w-md md:max-w-lg lg:max-w-xl min-w-0">
+            <p class="break-words">{{ msg.contenu }}</p>
           </div>
-          <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-            <img *ngIf="isAssociation" alt="..." [src]='user.picture' loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-8 h-8 rounded-full">
-            <img *ngIf="!isAssociation" alt="..." [src]='user.picture' loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-8 h-8 rounded-full">
-          </div>
+          <!-- <div class="flex-shrink-0 ml-2 hidden sm:flex">
+            <img *ngIf="utilisateur!.isAssociation" alt="..." [src]="user.picture" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-8 h-8 rounded-full object-cover">
+            <img *ngIf="!utilisateur!.isAssociation" alt="..." [src]="user.picture" loading="lazy" decoding="async" referrerpolicy="no-referrer" class="w-8 h-8 rounded-full object-cover">
+          </div> -->
         </div>
       </div>
     </div>
     <ng-template #noMessages>
-      <p class="text-center text-gray-500 dark:text-gray-300">Merci d'écrire votre message</p>
+      <div class="flex items-center justify-center h-full">
+        <h1 class="text-center text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Vous pouvez commencer une conversation</h1>
+      </div>
     </ng-template>
   </div>
 

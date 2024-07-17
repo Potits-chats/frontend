@@ -61,6 +61,7 @@ export interface Utilisateur {
   role: Role;
   favoris: Favori[];
   association?: Association;
+  isAssociation?: boolean;
 }
 
 export interface Association {
