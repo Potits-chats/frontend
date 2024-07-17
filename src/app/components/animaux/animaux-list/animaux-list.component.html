@@ -1,4 +1,4 @@
-<div class="bg-white px-2 py-8 sm:py-10 lg:px-8">
+<div *ngIf="!profileContext" class="bg-white px-2 py-8 sm:py-10 lg:px-8">
     <div class="mx-auto max-w-2xl text-center">
         <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">Les chats à adopter</h1>
         <p class="mt-4 text-md leading-6 text-gray-500">Nous avons plusieurs adorables chats qui cherchent un foyer
@@ -9,7 +9,7 @@
 <app-loader *ngIf="!isLoaded"></app-loader>
 
 <!-- Filter Inputs -->
-<div *ngIf="isLoaded" class="px-4 py-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+<div *ngIf="isLoaded && !profileContext" class="px-4 py-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
     <form [formGroup]="form" (ngSubmit)="onSearch()" class="flex flex-wrap gap-4 justify-center items-center mb-8">
         <select formControlName="ville"
             class="form-select block w-full sm:w-auto px-3 py-2 border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
@@ -38,7 +38,7 @@
 <div *ngIf="isLoaded && chats && chats.length > 0"
     class="px-4 py-12 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-16">
 
-    <div class="text-left mb-8">
+    <div class="text-left mb-8" *ngIf="!profileContext">
         <p class="text-lg font-medium text-gray-700">Nombre de chats disponibles : {{ chats.length }}</p>
     </div>
     <div class="grid gap-8 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full">

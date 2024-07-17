@@ -15,4 +15,15 @@ export class ProfilComponent {
   faXmark = faXmark;
 
   constructor(public auth: AuthService) {}
+
+
+  getLoginMethod(sub: string): string {
+    if (sub.startsWith('google-oauth2')) {
+      return 'Google';
+    } else if (sub.startsWith('auth0')) {
+      return 'Compte manuel';
+    } else {
+      return 'Autre';
+    }
+  }
 }
