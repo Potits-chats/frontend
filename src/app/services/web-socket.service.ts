@@ -1,43 +1,20 @@
 import { Injectable } from '@angular/core';
-import { io, Socket } from 'socket.io-client';
-import { environment } from 'src/environments/environment';
+import Pusher from 'pusher-js';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WebSocketService {
-  api = environment.api.serverUrl;
-  private socket: Socket = io(this.api);
+  private pusher: Pusher;
 
-//   public sendMessage(message: string): void {
-//     this.socket.emit('message', message);
-//   }
-
-//   public onMessage(): Promise<string> {
-//     return new Promise(resolve => {
-//       this.socket.on('message', (data: string) => {
-//         resolve(data);
-//       });
-//     });
-//   }
-
-  joinRoom(room: string): void {
-    this.socket.emit('joinRoom', { room });
+  constructor() {
+    this.pusher = new Pusher('29fdd82357f17b9e1f8e', {
+      cluster: 'eu',
+    });
   }
 
-  sendMessage(room: string, message: string): void {
-    this.socket.emit('message', { room, message });
+  subscribeToChannel(channelName: string, eventName: string, callback: (data: any) => void) {
+    const channel = this.pusher.subscribe(channelName);
+    channel.bind(eventName, callback);
   }
-
-  onMessage(callback: (message: string) => void): void {
-    this.socket.on('message', callback);
-  }
-
-  // Méthode pour écouter les notifications de la room
-  onRoomNotification(callback: (message: string) => void): void {
-    this.socket.on('notification', callback);
-  }
-
-
-  // Ajoutez d'autres méthodes au besoin...
 }
