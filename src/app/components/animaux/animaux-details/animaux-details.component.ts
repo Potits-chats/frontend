@@ -18,6 +18,7 @@ import { Subscription, firstValueFrom } from 'rxjs';
 })
 export class AnimauxDetailsComponent {
   chat: Chat | undefined;
+  isLoaded: boolean = false;
   sexe = Sexe;
   faMars = faMars;
   faVenus = faVenus;
@@ -61,6 +62,7 @@ export class AnimauxDetailsComponent {
     this.route.params.subscribe((params) => {
       if (params['id']) {
         this.appService.getByIdCat(params['id']).subscribe((chat) => {
+          this.isLoaded = true;
           this.chat = chat;
         });
       }
