@@ -54,18 +54,14 @@ export interface Video {
 export interface Utilisateur {
   id: number;
   email: string;
-  hash: string;
-  adresse?: string;
-  ville?: string;
-  codePostal?: string;
-  telephone?: string;
-  nom?: string;
-  prenom?: string;
+  userId: string;
+  img: string;
+  nom: string;
   associationId?: number;
   role: Role;
-  password?: string;
   favoris: Favori[];
   association?: Association;
+  isAssociation?: boolean;
 }
 
 export interface Association {
@@ -134,6 +130,19 @@ export interface PageEvent {
 
 
 export interface Message {
-  username: string;
-  message: string;
+  id: number;
+  contenu: string;
+  createdAt: Date;
+  utilisateursId: number;
+  associationsId: number;
+  isUserSender: boolean;
+}
+
+export interface Conversation {
+  id: number;
+  nom: string;
+  img?: string;
+  messages: Message[];
+  photos?: Photo[];
+  associationId?: number;
 }

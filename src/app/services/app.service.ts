@@ -148,18 +148,26 @@ export class AppService {
     );
   }
 
-
-  // username et message
-  sendMessage( username: String, message: String) : Observable<any> {
-    return this.http.post(this.api + '/conversations', 
-    {
-      username: username,
-      message: message
-    }
-    ).pipe(
+  sendMessage(userId: number, associationId: number, content: string, isUserSender: boolean) {
+    return this.http.post(`${this.api}/messages`, {
+      userId,
+      associationId,
+      content,
+      isUserSender,
+    }).pipe(
       map((res: any) => res),
       share(),
       take(1)
     );
   }
+  
+  getMessages(userId: number, associationId: number) {
+    return this.http.get(`${this.api}/messages/${associationId}/${userId}`).pipe(
+      map((res: any) => res),
+      share(),
+      take(1)
+    );
+  }
+
+
 }
