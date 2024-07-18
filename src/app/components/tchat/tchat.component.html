@@ -5,11 +5,8 @@
     <header class="p-4 flex justify-between items-center bg-orange-600 text-white">
       <h1 class="text-2xl font-semibold">Messages</h1>
       <div class="relative">
-        <button id="menuButton" (click)="toggleMenu()" class="focus:outline-none">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-100 pointer-events-none" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-            <path d="M2 10a2 2 0 012-2h12a2 2 0 012 2 2 2 0 01-2 2H4a2 2 0 01-2-2z" />
-          </svg>
+        <button *ngIf="menuVisible" id="menuButton" (click)="toggleMenu()" >
+          <fa-icon [icon]="faCaretSquareLeft" size="2x"></fa-icon>
         </button>
       </div>
     </header>
@@ -31,7 +28,7 @@
 
           <div class="flex-1">
             <h3 class="text-lg font-semibold">{{ conversation.nom }}</h3>
-            <p class="text-gray-600 dark:text-white">{{ conversation.messages[0].contenu || 'No message yet' }}</p>
+            <p class="text-gray-600 dark:text-white">{{ timeAgo(conversation.messages[0].createdAt) || "" }} - {{ truncateMessage(conversation.messages[0].contenu) || 'No message yet' }}</p>
           </div>
         </div>
       </div>
@@ -44,11 +41,8 @@
   <!-- Main Content -->
   <div class="flex-1 relative">
     <app-tchat-message *ngIf="utilisateur" [selectedConversation]="selectedConversation" [utilisateur]="utilisateur"></app-tchat-message>
-    <button id="menuButton" (click)="toggleMenu()" class="absolute top-4 left-4 focus:outline-none bg-orange-600 text-white p-2 rounded-md">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 pointer-events-none" viewBox="0 0 20 20" fill="currentColor">
-        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-        <path d="M2 10a2 2 0 012-2h12a2 2 0 012 2 2 2 0 01-2 2H4a2 2 0 01-2-2z" />
-      </svg>
+    <button *ngIf="!menuVisible" id="menuButton" (click)="toggleMenu()" class="absolute top-4 left-4 focus:outline-none bg-orange-600 text-white p-2 rounded-md">
+      <fa-icon [icon]="faCaretSquareRight" size="2x"></fa-icon>
     </button>
   </div>
 </div>

@@ -1,4 +1,3 @@
-// no-header-footer.directive.ts
 import {
   Directive,
   Input,
@@ -39,7 +38,7 @@ export class NoHeaderFooterDirective implements OnInit, OnDestroy {
 
   private checkVisibility() {
     const currentRoute = this.router.url;
-    const shouldHide = this.restrictedRoutes.includes(currentRoute);
+    const shouldHide = this.restrictedRoutes.some(route => currentRoute.startsWith(route));
     if (shouldHide) {
       this.renderer.setStyle(this.el.nativeElement, 'display', 'none');
     } else {

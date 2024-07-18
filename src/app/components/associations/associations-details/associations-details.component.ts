@@ -17,6 +17,7 @@ import { Subscription, firstValueFrom } from 'rxjs';
 })
 export class AssociationsDetailsComponent {
   asso: Association | undefined;
+  isLoaded: boolean = false;
   faTrash = faTrash;
   faUpload = faUpload;
   dataModel: any;
@@ -56,6 +57,7 @@ export class AssociationsDetailsComponent {
     this.route.params.subscribe((params) => {
       if (params['id']) {
         this.appService.getByIdAsso(params['id']).subscribe((asso) => {
+          this.isLoaded = true;
           this.asso = asso;
           if (this.asso.urlGoogleMapsEmbled){
             this.safeUrlGoogleMapsEmbled = this.sanitizer.bypassSecurityTrustResourceUrl(this.asso.urlGoogleMapsEmbled);
