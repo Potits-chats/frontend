@@ -100,6 +100,14 @@ export class AppService {
     );
   }
 
+  createAsso(asso: Association): Observable<Association> {
+    return this.http.post(this.api + '/associations', asso).pipe(
+      map((res: any) => res),
+      share(),
+      take(1)
+    );
+  }
+
   createFavori(favori: Favori): Observable<Favori> {
     return this.http.post(this.api + '/favoris', favori).pipe(
       map((res: any) => res),

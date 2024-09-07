@@ -65,7 +65,7 @@ export interface Utilisateur {
 }
 
 export interface Association {
-  id: number;
+  id?: number;
   nom: string;
   url: string;
   ville: string;
