@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { faPaw } from '@fortawesome/free-solid-svg-icons';
+import { faFaceGrinHearts, faHeart, faPaw } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -9,7 +9,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class HomeComponent {
   faPaw = faPaw;
-
+  faFaceGrinHearts = faFaceGrinHearts;
+  faHeart = faHeart;
   constructor(private toastr: ToastrService) {}
 
   showSuccess() {
