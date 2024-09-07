@@ -61,13 +61,22 @@
                     </div>
                   </div>
                 </div>
+            
                 <!-- URL -->
                 <div class="p-2 w-full">
                   <div class="relative">
-                    <label for="url" class="leading-7 text-sm text-gray-600">Site Web (optionnel)</label>
-                    <input type="url" id="url" name="url" formControlName="url" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    <label for="url" class="leading-7 text-sm text-gray-600">Site Web 
+                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('url')?.errors?.['required']">*</span>
+                    </label>
+                    <input type="url" id="url" name="url" formControlName="url" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                      [class.border-red-500]="associationForm.controls['url'].touched && associationForm.controls['url'].invalid"
+                      [class.border-green-500]="associationForm.controls['url'].touched && associationForm.controls['url'].valid">
+                    <div *ngIf="associationForm.controls['url'].touched && associationForm.controls['url'].invalid" class="text-red-500 text-xs mt-1">
+                      {{ getErrorMessage('url') }}
+                    </div>
                   </div>
                 </div>
+            
                 <!-- Ville -->
                 <div class="p-2 w-full">
                   <div class="relative">
@@ -82,23 +91,23 @@
                     </div>
                   </div>
                 </div>
-                 <!-- Description short -->
-                 <div class="p-2 w-full">
-                   <div class="relative">
-                     <label for="shortDescription" class="leading-7 text-sm text-gray-600">Description courte
-                       <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('shortDescription')?.errors?.['required']">*</span>
-                     </label>
-                     <textarea id="shortDescription" name="shortDescription" formControlName="shortDescription" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-                       [class.border-red-500]="associationForm.controls['shortDescription'].touched && associationForm.controls['shortDescription'].invalid"
-                       [class.border-green-500]="associationForm.controls['shortDescription'].touched && associationForm.controls['shortDescription'].valid">
-                     </textarea>
-                     <div *ngIf="associationForm.controls['shortDescription'].touched && associationForm.controls['shortDescription'].invalid" class="text-red-500 text-xs mt-1">
-                       {{ getErrorMessage('shortDescription') }}
-                     </div>
-                   </div>
-                 </div>
-
-                <!-- Description détaillé -->
+            
+                <!-- Description courte -->
+                <div class="p-2 w-full">
+                  <div class="relative">
+                    <label for="shortDescription" class="leading-7 text-sm text-gray-600">Description courte 
+                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('shortDescription')?.errors?.['required']">*</span>
+                    </label>
+                    <textarea id="shortDescription" name="shortDescription" formControlName="shortDescription" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
+                      [class.border-red-500]="associationForm.controls['shortDescription'].touched && associationForm.controls['shortDescription'].invalid"
+                      [class.border-green-500]="associationForm.controls['shortDescription'].touched && associationForm.controls['shortDescription'].valid"></textarea>
+                    <div *ngIf="associationForm.controls['shortDescription'].touched && associationForm.controls['shortDescription'].invalid" class="text-red-500 text-xs mt-1">
+                      {{ getErrorMessage('shortDescription') }}
+                    </div>
+                  </div>
+                </div>
+            
+                <!-- Description -->
                 <div class="p-2 w-full">
                   <div class="relative">
                     <label for="description" class="leading-7 text-sm text-gray-600">Description 
@@ -106,28 +115,42 @@
                     </label>
                     <textarea id="description" name="description" formControlName="description" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
                       [class.border-red-500]="associationForm.controls['description'].touched && associationForm.controls['description'].invalid"
-                      [class.border-green-500]="associationForm.controls['description'].touched && associationForm.controls['description'].valid">
-                    </textarea>
+                      [class.border-green-500]="associationForm.controls['description'].touched && associationForm.controls['description'].valid"></textarea>
                     <div *ngIf="associationForm.controls['description'].touched && associationForm.controls['description'].invalid" class="text-red-500 text-xs mt-1">
                       {{ getErrorMessage('description') }}
                     </div>
                   </div>
                 </div>
+            
                 <!-- Téléphone -->
                 <div class="p-2 w-full">
                   <div class="relative">
-                    <label for="tel" class="leading-7 text-sm text-gray-600">Téléphone (optionnel)</label>
-                    <input type="text" id="tel" name="tel" formControlName="tel" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    <label for="tel" class="leading-7 text-sm text-gray-600">Téléphone 
+                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('tel')?.errors?.['required']">*</span>
+                    </label>
+                    <input type="text" id="tel" name="tel" formControlName="tel" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                      [class.border-red-500]="associationForm.controls['tel'].touched && associationForm.controls['tel'].invalid"
+                      [class.border-green-500]="associationForm.controls['tel'].touched && associationForm.controls['tel'].valid">
+                    <div *ngIf="associationForm.controls['tel'].touched && associationForm.controls['tel'].invalid" class="text-red-500 text-xs mt-1">
+                      {{ getErrorMessage('tel') }}
+                    </div>
                   </div>
                 </div>
-                <!-- URL Google Maps Embed (optionnel) -->
+            
+                <!-- URL Google Maps Embed -->
                 <div class="p-2 w-full">
                   <div class="relative">
-                    <label for="urlGoogleMapsEmbled" class="leading-7 text-sm text-gray-600">URL Google Maps (optionnel)</label>
-                    <input type="url" id="urlGoogleMapsEmbled" name="urlGoogleMapsEmbled" formControlName="urlGoogleMapsEmbled" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+                    <label for="urlGoogleMapsEmbled" class="leading-7 text-sm text-gray-600">URL Google Maps 
+                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('urlGoogleMapsEmbled')?.errors?.['required']">*</span>
+                    </label>
+                    <input type="url" id="urlGoogleMapsEmbled" name="urlGoogleMapsEmbled" formControlName="urlGoogleMapsEmbled" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
+                      [class.border-red-500]="associationForm.controls['urlGoogleMapsEmbled'].touched && associationForm.controls['urlGoogleMapsEmbled'].invalid"
+                      [class.border-green-500]="associationForm.controls['urlGoogleMapsEmbled'].touched && associationForm.controls['urlGoogleMapsEmbled'].valid">
+                    <div *ngIf="associationForm.controls['urlGoogleMapsEmbled'].touched && associationForm.controls['urlGoogleMapsEmbled'].invalid" class="text-red-500 text-xs mt-1">
+                      {{ getErrorMessage('urlGoogleMapsEmbled') }}
+                    </div>
                   </div>
                 </div>
-                <!-- Bouton de soumission -->
                 <div class="p-2 w-full">
                   <button type="submit" [disabled]="associationForm.invalid" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Créer l'association</button>
                 </div>

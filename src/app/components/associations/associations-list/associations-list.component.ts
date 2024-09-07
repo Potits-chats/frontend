@@ -40,7 +40,7 @@ export class AssociationsListComponent {
     this.getAssociations();
     this.associationForm = this.fb.group({
       nom: ['', [Validators.required, Validators.minLength(3)]],
-      url: [''],
+      url: ['', Validators.required],
       ville: ['', Validators.required],
       description: ['', [Validators.required, Validators.minLength(10)]],
       shortDescription: ['', [Validators.required, Validators.minLength(10)]],
