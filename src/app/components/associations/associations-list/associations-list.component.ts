@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '@auth0/auth0-angular';
 import { Subscription } from 'rxjs';
 import { Association } from '../../../interfaces/interfaces';
-import { faLocationDot, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faCat, faLocationDot, faPen } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
@@ -19,6 +19,7 @@ export class AssociationsListComponent {
   isLoaded: boolean = false;
   isAuthenticated: boolean = false;
   faLocationDot = faLocationDot;
+  faCat = faCat;
   faPen = faPen;
 
   associationForm!: FormGroup;
