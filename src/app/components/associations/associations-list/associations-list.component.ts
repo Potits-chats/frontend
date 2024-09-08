@@ -70,36 +70,6 @@ export class AssociationsListComponent {
     this.subscriptions.unsubscribe();
   }
 
-  getErrorMessage(controlName: string): string {
-    const control = this.associationForm.get(controlName);
-    if (control?.hasError('required')) {
-      return 'Ce champ est requis';
-    }
-    if (control?.hasError('minlength')) {
-      const minLength = control?.errors?.['minlength'].requiredLength;
-      return `Ce champ doit contenir au moins ${minLength} caractères`;
-    }
-    return '';
-  }
-
-
-  onSubmit() {
-    if (this.associationForm.valid) {
-      console.log('Form Data:', this.associationForm.value);
-      this.appService.createAsso(this.associationForm.value).subscribe({
-        next: (response) => {
-          console.log('response:', response);
-          this.toastr.success('Association créée avec succès, elle va être vérifiée par un administrateur', 'Succès');
-          this.associationForm.reset();
-        },
-        error: (error) => {
-          this.toastr.error('Une erreur est survenue, veuillez réessayer plus tard', 'Erreur');
-          console.error('error:', error);
-        }
-      });
-    }
-  }
-
   sanitizeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }

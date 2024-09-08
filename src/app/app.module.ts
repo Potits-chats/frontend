@@ -48,6 +48,7 @@ import { BugComponent } from './components/bug/bug.component';
 
 import { AssociationsDetailsComponent } from './components/associations/associations-details/associations-details.component';
 import { PaginatorModule } from 'primeng/paginator';
+import { AssociationsFormComponent } from './components/associations/associations-form/associations-form.component';
 
 
 @NgModule({
@@ -74,6 +75,7 @@ import { PaginatorModule } from 'primeng/paginator';
     TchatMessageComponent,
     AssociationsDetailsComponent,
     BugComponent,
+    AssociationsFormComponent,
   ],
   imports: [
     BrowserModule,
