@@ -147,6 +147,17 @@
     Contacter {{asso.nom }}
     </button>
 
+    <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
+        <div class="flex flex-wrap justify-center">
+          <div>
+            <h2 class="text-center">Chats de l'association : </h2>
+            <div>
+                <app-animaux-list [associationId]="asso.id" [profileContext]="true"></app-animaux-list>
+            </div>
+          </div>
+        </div>
+    </div>
+
 </div>
 
 

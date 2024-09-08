@@ -20,6 +20,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class AnimauxListComponent {
   @Input() profileContext: boolean = false;
+  @Input() associationId: number | undefined = undefined;
   isLoaded: boolean = false;
   faMars = faMars;
   faVenus = faVenus;
@@ -65,7 +66,7 @@ export class AnimauxListComponent {
 
   async ngOnInit() {
     this.isAuthenticated = await firstValueFrom(this.auth.isAuthenticated$);
-    if (this.profileContext && this.isAuthenticated) {
+    if (this.profileContext && this.isAuthenticated && !this.associationId) {
       this.getCatByFavoris();
     } else {
       this.getCats();
@@ -103,7 +104,7 @@ export class AnimauxListComponent {
     const filters = {
       ville: this.form.value.ville,
       race: this.form.value.race,
-      association: this.form.value.association
+      association: this.associationId ? this.associationId : this.form.value.association 
     };
 
     console.log('🚀 ~ AnimauxListComponent ~ catSubscription ~ filters:', filters);

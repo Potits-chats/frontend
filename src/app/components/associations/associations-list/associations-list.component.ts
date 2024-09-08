@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '@auth0/auth0-angular';
 import { Subscription } from 'rxjs';
 import { Association } from '../../../interfaces/interfaces';
-import { faLocationDot, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faCat, faLocationDot, faPen } from '@fortawesome/free-solid-svg-icons';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
@@ -19,6 +19,7 @@ export class AssociationsListComponent {
   isLoaded: boolean = false;
   isAuthenticated: boolean = false;
   faLocationDot = faLocationDot;
+  faCat = faCat;
   faPen = faPen;
 
   associationForm!: FormGroup;
@@ -68,36 +69,6 @@ export class AssociationsListComponent {
   }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
-  }
-
-  getErrorMessage(controlName: string): string {
-    const control = this.associationForm.get(controlName);
-    if (control?.hasError('required')) {
-      return 'Ce champ est requis';
-    }
-    if (control?.hasError('minlength')) {
-      const minLength = control?.errors?.['minlength'].requiredLength;
-      return `Ce champ doit contenir au moins ${minLength} caractères`;
-    }
-    return '';
-  }
-
-
-  onSubmit() {
-    if (this.associationForm.valid) {
-      console.log('Form Data:', this.associationForm.value);
-      this.appService.createAsso(this.associationForm.value).subscribe({
-        next: (response) => {
-          console.log('response:', response);
-          this.toastr.success('Association créée avec succès, elle va être vérifiée par un administrateur', 'Succès');
-          this.associationForm.reset();
-        },
-        error: (error) => {
-          this.toastr.error('Une erreur est survenue, veuillez réessayer plus tard', 'Erreur');
-          console.error('error:', error);
-        }
-      });
-    }
   }
 
   sanitizeHtml(html: string): SafeHtml {

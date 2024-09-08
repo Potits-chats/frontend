@@ -2,25 +2,41 @@
 
 <div *ngIf="isLoaded && associations && associations.length > 0" class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
   <ul role="list" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-    <li *ngFor="let association of associations" class="group col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow overflow-hidden transition-shadow shadow-xl duration-300 bg-white rounded shadow-sm block scale-100 transform opacity-100 transition duration-300 scale-100 transform transition duration-300 hover:scale-105">
-      <div class="flex w-full items-center justify-between space-x-6 p-6 cursor-pointer" [routerLink]="['/associations', association.id]">
-        <div class="flex-1">
-          <div class="flex items-center space-x-3">
-            <a [routerLink]="['/associations', association.id]">
-              <h3 class="truncate text-sm font-medium text-gray-900">{{ association.nom }}</h3>
-            </a>
-          </div>
-          <p class="mt-1 text-sm text-gray-500">
-            {{ association.shortDescription }}
-          </p>
-        </div>
-        <img class="h-20 w-20 flex-shrink-0 rounded-full bg-gray-300" [src]="association.photos[0].url" alt="{{ association.nom }}">
+    <li 
+      *ngFor="let association of associations"
+      class="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow flex flex-col transition transform duration-300 hover:scale-105 cursor-pointer"
+      [routerLink]="['/associations', association.id]">
+      
+      <div class="flex-1 p-6 flex flex-col items-center">
+        <!-- Nom de l'association -->
+        <a [routerLink]="['/associations', association.id]" class="text-center">
+          <h2 class="text-xl font-medium text-gray-900">{{ association.nom }}</h2>
+        </a>
+
+        <!-- Image de l'association -->
+        <div class="mt-4" *ngIf="association.photos && association.photos.length > 0">
+          <img class="h-32 w-32 rounded-full object-cover mx-auto" [src]="association.photos[0].url" alt="{{ association.nom }}">
+        </div>        
+
+        <!-- Description de l'association -->
+        <p class="mt-4 text-sm text-gray-500 text-center">{{ association.shortDescription }}</p>
       </div>
+
       <div>
-        <div class="flex justify-center border-gray-200">
-          <div class="relative inline-flex items-center gap-x-3 py-4 text-sm font-semibold text-gray-900">
-            <fa-icon [icon]="faLocationDot" aria-label="Favori" title="Favori" class="mr-2 fa-xl"></fa-icon>
-            {{ association.ville }}
+        <div class="-mt-px flex divide-x divide-gray-200">
+          <!-- Ville -->
+          <div class="flex w-0 flex-1">
+            <div class="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900">
+              <fa-icon [icon]="faLocationDot" aria-label="Location" title="Location" class="mr-2 fa-xl"></fa-icon>
+              {{ association.ville }}
+            </div>
+          </div>
+          <!-- Nombre de chats (exemple de fonctionnalité supplémentaire) -->
+          <div class="-ml-px flex w-0 flex-1">
+            <div class="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900">
+              <fa-icon [icon]="faCat" aria-label="Location" title="Location" class="mr-2 fa-xl"></fa-icon>
+              {{ association.chats.length }}
+            </div>
           </div>
         </div>
       </div>
@@ -28,137 +44,4 @@
   </ul>
 </div>
 
-<!-- Accordéon : Rajouter mon association ? -->
-<div class="px-4 py-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-10">
-  <p-accordion class="w-full">
-    <p-accordionTab>
-      <ng-template pTemplate="header">
-        <div class="flex align-items-center">
-          <i class="pi pi-plus-circle mr-2"></i>
-          <span class="vertical-align-middle">Rajouter mon association ?</span>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="content">
-        <section class="text-gray-600 body-font relative">
-          <div class="container px-5 py-24 mx-auto">
-            <div class="flex flex-col text-center w-full mb-12">
-              <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Créer une Association</h1>
-              <p class="leading-relaxed text-base">Remplissez les informations ci-dessous pour créer une nouvelle association.</p>
-            </div>
-            <form [formGroup]="associationForm" (ngSubmit)="onSubmit()" class="lg:w-1/2 md:w-2/3 mx-auto">
-              <div class="flex flex-wrap -m-2">
-                <!-- Nom -->
-                <div class="p-2 w-full">
-                  <div class="relative">
-                    <label for="nom" class="leading-7 text-sm text-gray-600">Nom de l'association 
-                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('nom')?.errors?.['required']">*</span>
-                    </label>
-                    <input type="text" id="nom" name="nom" formControlName="nom" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                      [class.border-red-500]="associationForm.controls['nom'].touched && associationForm.controls['nom'].invalid"
-                      [class.border-green-500]="associationForm.controls['nom'].touched && associationForm.controls['nom'].valid">
-                    <div *ngIf="associationForm.controls['nom'].touched && associationForm.controls['nom'].invalid" class="text-red-500 text-xs mt-1">
-                      {{ getErrorMessage('nom') }}
-                    </div>
-                  </div>
-                </div>
-            
-                <!-- URL -->
-                <div class="p-2 w-full">
-                  <div class="relative">
-                    <label for="url" class="leading-7 text-sm text-gray-600">Site Web 
-                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('url')?.errors?.['required']">*</span>
-                    </label>
-                    <input type="url" id="url" name="url" formControlName="url" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                      [class.border-red-500]="associationForm.controls['url'].touched && associationForm.controls['url'].invalid"
-                      [class.border-green-500]="associationForm.controls['url'].touched && associationForm.controls['url'].valid">
-                    <div *ngIf="associationForm.controls['url'].touched && associationForm.controls['url'].invalid" class="text-red-500 text-xs mt-1">
-                      {{ getErrorMessage('url') }}
-                    </div>
-                  </div>
-                </div>
-            
-                <!-- Ville -->
-                <div class="p-2 w-full">
-                  <div class="relative">
-                    <label for="ville" class="leading-7 text-sm text-gray-600">Ville 
-                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('ville')?.errors?.['required']">*</span>
-                    </label>
-                    <input type="text" id="ville" name="ville" formControlName="ville" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                      [class.border-red-500]="associationForm.controls['ville'].touched && associationForm.controls['ville'].invalid"
-                      [class.border-green-500]="associationForm.controls['ville'].touched && associationForm.controls['ville'].valid">
-                    <div *ngIf="associationForm.controls['ville'].touched && associationForm.controls['ville'].invalid" class="text-red-500 text-xs mt-1">
-                      {{ getErrorMessage('ville') }}
-                    </div>
-                  </div>
-                </div>
-            
-                <!-- Description courte -->
-                <div class="p-2 w-full">
-                  <div class="relative">
-                    <label for="shortDescription" class="leading-7 text-sm text-gray-600">Description courte 
-                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('shortDescription')?.errors?.['required']">*</span>
-                    </label>
-                    <textarea id="shortDescription" name="shortDescription" formControlName="shortDescription" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-                      [class.border-red-500]="associationForm.controls['shortDescription'].touched && associationForm.controls['shortDescription'].invalid"
-                      [class.border-green-500]="associationForm.controls['shortDescription'].touched && associationForm.controls['shortDescription'].valid"></textarea>
-                    <div *ngIf="associationForm.controls['shortDescription'].touched && associationForm.controls['shortDescription'].invalid" class="text-red-500 text-xs mt-1">
-                      {{ getErrorMessage('shortDescription') }}
-                    </div>
-                  </div>
-                </div>
-            
-                <!-- Description -->
-                <div class="p-2 w-full">
-                  <div class="relative">
-                    <label for="description" class="leading-7 text-sm text-gray-600">Description 
-                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('description')?.errors?.['required']">*</span>
-                    </label>
-                    <textarea id="description" name="description" formControlName="description" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"
-                      [class.border-red-500]="associationForm.controls['description'].touched && associationForm.controls['description'].invalid"
-                      [class.border-green-500]="associationForm.controls['description'].touched && associationForm.controls['description'].valid"></textarea>
-                    <div *ngIf="associationForm.controls['description'].touched && associationForm.controls['description'].invalid" class="text-red-500 text-xs mt-1">
-                      {{ getErrorMessage('description') }}
-                    </div>
-                  </div>
-                </div>
-            
-                <!-- Téléphone -->
-                <div class="p-2 w-full">
-                  <div class="relative">
-                    <label for="tel" class="leading-7 text-sm text-gray-600">Téléphone 
-                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('tel')?.errors?.['required']">*</span>
-                    </label>
-                    <input type="text" id="tel" name="tel" formControlName="tel" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                      [class.border-red-500]="associationForm.controls['tel'].touched && associationForm.controls['tel'].invalid"
-                      [class.border-green-500]="associationForm.controls['tel'].touched && associationForm.controls['tel'].valid">
-                    <div *ngIf="associationForm.controls['tel'].touched && associationForm.controls['tel'].invalid" class="text-red-500 text-xs mt-1">
-                      {{ getErrorMessage('tel') }}
-                    </div>
-                  </div>
-                </div>
-            
-                <!-- URL Google Maps Embed -->
-                <div class="p-2 w-full">
-                  <div class="relative">
-                    <label for="urlGoogleMapsEmbled" class="leading-7 text-sm text-gray-600">URL Google Maps 
-                      <span class="text-red-500 text-xs mt-1" *ngIf="associationForm.get('urlGoogleMapsEmbled')?.errors?.['required']">*</span>
-                    </label>
-                    <input type="url" id="urlGoogleMapsEmbled" name="urlGoogleMapsEmbled" formControlName="urlGoogleMapsEmbled" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"
-                      [class.border-red-500]="associationForm.controls['urlGoogleMapsEmbled'].touched && associationForm.controls['urlGoogleMapsEmbled'].invalid"
-                      [class.border-green-500]="associationForm.controls['urlGoogleMapsEmbled'].touched && associationForm.controls['urlGoogleMapsEmbled'].valid">
-                    <div *ngIf="associationForm.controls['urlGoogleMapsEmbled'].touched && associationForm.controls['urlGoogleMapsEmbled'].invalid" class="text-red-500 text-xs mt-1">
-                      {{ getErrorMessage('urlGoogleMapsEmbled') }}
-                    </div>
-                  </div>
-                </div>
-                <div class="p-2 w-full">
-                  <button type="submit" [disabled]="associationForm.invalid" class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Créer l'association</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </section>        
-      </ng-template>
-    </p-accordionTab>
-  </p-accordion>
-</div>
+<app-associations-form></app-associations-form>
