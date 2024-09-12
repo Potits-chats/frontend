@@ -17,6 +17,7 @@ import { AuthGuard } from '@auth0/auth0-angular';
 import { TchatComponent } from './components/tchat/tchat.component';
 import { AssociationsDetailsComponent } from './components/associations/associations-details/associations-details.component';
 import { BugComponent } from './components/bug/bug.component';
+import { AnimauxEditComponent } from './components/animaux/animaux-edit/animaux-edit.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,10 @@ const routes: Routes = [
   {
     path: 'contact',
     component: ContactComponent,
+  },
+  {
+    path: 'animaux/ajouter',
+    component: AnimauxEditComponent,
   },
   {
     path: 'animaux/:id',

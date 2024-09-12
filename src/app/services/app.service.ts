@@ -76,6 +76,14 @@ export class AppService {
     );
   }
 
+  createChat(chat: Chat): Observable<Chat> {
+    return this.http.post(this.api + '/chats', chat).pipe(
+      map((res: any) => res),
+      share(),
+      take(1)
+    );
+  }
+
   getAllAsso(): Observable<Association[]> {
     return this.http.get(this.api + '/associations').pipe(
       map((res: any) => res),

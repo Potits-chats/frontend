@@ -49,6 +49,7 @@ import { BugComponent } from './components/bug/bug.component';
 import { AssociationsDetailsComponent } from './components/associations/associations-details/associations-details.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { AssociationsFormComponent } from './components/associations/associations-form/associations-form.component';
+import { AnimauxEditComponent } from './components/animaux/animaux-edit/animaux-edit.component';
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import { AssociationsFormComponent } from './components/associations/association
     AssociationsDetailsComponent,
     BugComponent,
     AssociationsFormComponent,
+    AnimauxEditComponent,
   ],
   imports: [
     BrowserModule,
