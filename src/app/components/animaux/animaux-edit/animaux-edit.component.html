@@ -6,17 +6,21 @@
             </p>
         </div>
 
-        <button (click)="submitForm()" *ngIf="!isCreationMode"
-            class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">
-            Sauvegarder
+        <button *ngIf="!isCreationMode" (click)="updateChat()" 
+            class="flex mx-auto mt-16 py-2 px-8 border-0 focus:outline-none rounded text-lg bg-orange-700 text-white hover:bg-orange-800 active:bg-orange-600 active:text-white focus-visible:outline-orange-700">
+            Mettre à jour
         </button>
     
-        <button (click)="submitForm()" *ngIf="isCreationMode"
-            class="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-green-900">
+        <button *ngIf="isCreationMode"
+            (click)="saveChat()"
+            class="flex mx-auto mt-16 py-2 px-8 focus:outline-none rounded text-lg bg-orange-700 text-white hover:bg-orange-800 active:bg-orange-600 active:text-white focus-visible:outline-orange-700"
+            [disabled]="selectedFiles.length === 0"
+            [title]="selectedFiles.length === 0 ? 'Il faut ajouter au moins une image avant de créer ou de mettre à jour.' : ''"
+        >
             Créer
         </button>
 
-        <div class="flex justify-center">
+        <div class="flex justify-center py-8">
             <h1 class="max-w-lg mb-6 font-sans text-2xl font-bold leading-none tracking-tight text-gray-900 sm:text-2xl md:mx-auto">
                 <input [(ngModel)]="chat.nom" placeholder="Nom du chat" name="nom" class="block w-full text-xl text-center rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6">
             </h1>
@@ -26,32 +30,12 @@
     <div class="grid max-w-screen-lg gap-8 lg:grid-cols-2 sm:mx-auto">
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <!-- Affichage des images existantes si isCreationMode = false -->
             <div *ngIf="!isCreationMode">
-              <div *ngIf="chat.photos && chat.photos[0]" class="relative col-span-1 md:col-span-2">
-                <img [src]="s3Url + chat.photos[0].url" class="object-cover w-full h-56 md:h-auto rounded shadow-lg" alt="" />
-                <div class="absolute right-0 bottom-0 mb-2 mr-2 space-x-2">
-                  <button class="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 focus:outline-none">
-                    Changer
-                    <fa-icon [icon]="faUpload" aria-label="Upload" title="Upload" class="ml-1"></fa-icon>
-                  </button>
-                  <button class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 focus:outline-none">
-                    Supprimer
-                    <fa-icon [icon]="faTrash" aria-label="Supprimer" title="Supprimer" class="ml-1"></fa-icon>
-                  </button>
-                </div>
-              </div>
-          
               <div *ngIf="chat.photos">
-                <div *ngFor="let photo of chat.photos.slice(1)" class="relative">
-                  <img [src]="s3Url + photo.url" class="object-cover w-full h-48 rounded shadow-lg" alt="" />
-                  <div class="absolute right-0 bottom-0 mb-2 mr-2 space-x-2">
-                    <input type="file" (change)="onFileSelected($event, photo)" hidden #fileInputChange>
-                    <button (click)="fileInputChange.click()" class="button-class">
-                      Changer
-                      <fa-icon [icon]="faUpload"></fa-icon>
-                    </button>
-                    <button class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 focus:outline-none">
+                <div *ngFor="let photo of chat.photos" class="relative">
+                  <img *ngIf="photo.url" [src]="s3Url + photo.url" class="object-cover w-full h-48 rounded shadow-lg" alt="" />
+                  <div *ngIf="photo.url" class="absolute right-0 bottom-0 mb-2 mr-2 space-x-2">
+                    <button (click)="removePhotoOnline(photo.url)" class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 focus:outline-none">
                       Supprimer
                       <fa-icon [icon]="faTrash"></fa-icon>
                     </button>
@@ -229,8 +213,16 @@
     </div>
 
     <button (click)="updateChat()" *ngIf="!isCreationMode"
-        class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
-        Sauvegarder
+        class="flex mx-auto mt-16 py-2 px-8 border-0 focus:outline-none rounded text-lg bg-orange-700 text-white hover:bg-orange-800 active:bg-orange-600 active:text-white focus-visible:outline-orange-700">
+        Mettre à jour
+    </button>
+    <button *ngIf="isCreationMode"
+        (click)="saveChat()"
+        class="flex mx-auto mt-16 py-2 px-8 border-0 focus:outline-none rounded text-lg bg-orange-700 text-white hover:bg-orange-800 active:bg-orange-600 active:text-white focus-visible:outline-orange-700"
+        [disabled]="selectedFiles.length === 0"
+        [title]="selectedFiles.length === 0 ? 'Il faut ajouter au moins une image avant de créer ou de mettre à jour.' : ''"
+    >
+        Créer
     </button>
 
 </div>

@@ -26,7 +26,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div class="relative col-span-1 md:col-span-2">
-                <img [src]="asso.photos[0].url" class="object-cover w-full h-56 md:h-auto rounded shadow-lg" alt="" />
+                <img *ngIf="asso.photos && asso.photos[0]" [src]="asso.photos[0].url" class="object-cover w-full h-56 md:h-auto rounded shadow-lg" alt="" />
                 <div *ngIf="isEditMode" class="absolute right-0 bottom-0 mb-2 mr-2 space-x-2">
                     <button
                         class="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 focus:outline-none">
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div *ngFor="let photo of asso.photos.slice(1); let i = index" class="relative">
-                <img [src]="photo.url" class="object-cover w-full h-48 rounded shadow-lg" alt="" />
+                <img *ngIf="photo.url" [src]="photo.url" class="object-cover w-full h-48 rounded shadow-lg" alt="" />
                 <div *ngIf="isEditMode" class="absolute right-0 bottom-0 mb-2 mr-2 space-x-2">
                     <button
                         class="text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-1.5 focus:outline-none">

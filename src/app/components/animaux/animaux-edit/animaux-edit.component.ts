@@ -2,11 +2,12 @@ import { Component, ElementRef, Input, ChangeDetectorRef, AfterViewChecked, Chan
 import { ToastrService } from 'ngx-toastr';
 import { AppService } from '../../../services/app.service';
 import { UserService } from '../../../services/user.service';
-import { Chat, Sexe } from '../../../interfaces/interfaces';
+import { Chat, Photo, Sexe } from '../../../interfaces/interfaces';
 import { faMars, faTrash, faUpload, faVenus, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as fasHeart } from '@fortawesome/free-regular-svg-icons';
 import { environment } from 'src/environments/environment';
 import { NgZone } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-animaux-edit',
@@ -34,7 +35,8 @@ export class AnimauxEditComponent  implements AfterViewChecked{
     private toastr: ToastrService,
     public userService: UserService,
     private cdr: ChangeDetectorRef,
-    private zone: NgZone 
+    private zone: NgZone,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -77,14 +79,6 @@ export class AnimauxEditComponent  implements AfterViewChecked{
     } as Chat;
   }
 
-  submitForm() {
-    if (!this.isCreationMode) {
-      this.updateChat();
-    } else {
-      this.saveChat();
-    }
-  }
-
 
   onFileSelected(event: Event, existingPhoto: any) {
     const input = event.target as HTMLInputElement;
@@ -117,10 +111,8 @@ export class AnimauxEditComponent  implements AfterViewChecked{
     }
   
     this.selectedFiles.push(newFile);
-    
-    // Délai court pour attendre la fin du cycle de détection du changement
     setTimeout(() => {
-      this.cdr.detectChanges(); // Force la détection de changement
+      this.cdr.detectChanges();
     }, 0);
   }
   
@@ -143,18 +135,30 @@ export class AnimauxEditComponent  implements AfterViewChecked{
         console.error('error:', error);
         this.toastr.error('Erreur lors de la création du chat');
       },
-      complete: () => {
+      next: (chat) => {
         this.toastr.success('Chat créé avec succès');
-      },
+        this.router.navigate([`/animaux/${chat.id}`]); 
+      }
     });
   }
 
   removePhoto(file : File) {
     const index = this.selectedFiles.indexOf(file);
-    console.log('🚀 ~ AnimauxEditComponent ~ removePhoto ~ index:', index);
     if (index > -1) {
       this.selectedFiles.splice(index, 1);
     }
+  }
+
+  removePhotoOnline(photoName: string) {
+    this.appService.deleteChatPhoto(photoName).subscribe({
+      error: (error) => {
+        console.error('error:', error);
+        this.toastr.error('Erreur lors de la suppression de la photo');
+      },
+      complete: () => {
+        this.chat!.photos = this.chat!.photos.filter((p) => p.url !== photoName);
+      },
+    });
   }
 
   

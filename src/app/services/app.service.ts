@@ -68,7 +68,7 @@ export class AppService {
     );
   }
 
-  updateChat(id: number, formData: FormData): Observable<any> {
+  updateChat(id: number, formData: any): Observable<any> {
     return this.http.put(this.api + `/chats/${id}`, formData).pipe(
       map((res: any) => res),
       share(),
@@ -78,6 +78,14 @@ export class AppService {
 
   createChat(formData: FormData): Observable<any> {
     return this.http.post(this.api + '/chats', formData).pipe(
+      map((res: any) => res),
+      share(),
+      take(1)
+    );
+  }
+
+  deleteChatPhoto(photoName: string): Observable<any> {
+    return this.http.delete(this.api + `/files/${photoName}`).pipe(
       map((res: any) => res),
       share(),
       take(1)
