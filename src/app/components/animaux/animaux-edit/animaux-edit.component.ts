@@ -1,17 +1,20 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ChangeDetectorRef, AfterViewChecked, ChangeDetectionStrategy } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AppService } from '../../../services/app.service';
 import { UserService } from '../../../services/user.service';
 import { Chat, Sexe } from '../../../interfaces/interfaces';
 import { faMars, faTrash, faUpload, faVenus, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { faHeart as fasHeart } from '@fortawesome/free-regular-svg-icons';
+import { environment } from 'src/environments/environment';
+import { NgZone } from '@angular/core';
 
 @Component({
   selector: 'app-animaux-edit',
   templateUrl: './animaux-edit.component.html',
-  styleUrls: ['./animaux-edit.component.scss']
+  styleUrls: ['./animaux-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush 
 })
-export class AnimauxEditComponent {
+export class AnimauxEditComponent  implements AfterViewChecked{
   @Input() chat: Chat | undefined;
   @Input() isCreationMode: boolean = false;
   isLoaded: boolean = false;
@@ -24,16 +27,23 @@ export class AnimauxEditComponent {
   fasHeart = fasHeart;
   dataModel: any;
   isAuthenticated: boolean = false;
-
-
+  selectedFiles: File[] = [];
+  s3Url = environment.s3Url;
   constructor(
     private appService: AppService,
     private toastr: ToastrService,
     public userService: UserService,
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone 
   ) {}
 
   ngOnInit() {
     this.initializeChat();
+  }
+
+  ngAfterViewChecked() {
+    // Code à exécuter après que la vue ait été vérifiée
+    // this.cdr.detectChanges();
   }
 
   private initializeChat() {
@@ -76,9 +86,59 @@ export class AnimauxEditComponent {
   }
 
 
+  onFileSelected(event: Event, existingPhoto: any) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+  
+      // Replace the existing photo with the new file
+      this.replacePhoto(existingPhoto, file);
+    }
+  }
+  
+  onFilesSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.zone.run(() => {
+        for (let i = 0; i < input!.files!.length; i++) {
+          this.selectedFiles.push(input!.files![i]);
+        }
+        this.cdr.detectChanges();  // Ou markForCheck ici si OnPush
+      });
+    }
+  }
+  
+  
+  
+  replacePhoto(existingPhoto: any, newFile: File) {
+    const index = this.chat!.photos.indexOf(existingPhoto);
+    if (index > -1) {
+      this.chat!.photos.splice(index, 1);
+    }
+  
+    this.selectedFiles.push(newFile);
+    
+    // Délai court pour attendre la fin du cycle de détection du changement
+    setTimeout(() => {
+      this.cdr.detectChanges(); // Force la détection de changement
+    }, 0);
+  }
+  
+  
+  getFileUrl(file: File): string {
+    return URL.createObjectURL(file);
+  }
+
+
   saveChat() {
-    // Function to create a new chat
-    this.appService.createChat(this.chat!).subscribe({
+    const formData = new FormData();
+    formData.append('chat', JSON.stringify(this.chat));
+  
+    this.selectedFiles.forEach((file) => {
+      formData.append('photos', file, file.name);
+    });
+  
+    this.appService.createChat(formData).subscribe({
       error: (error) => {
         console.error('error:', error);
         this.toastr.error('Erreur lors de la création du chat');
@@ -89,18 +149,27 @@ export class AnimauxEditComponent {
     });
   }
 
+  removePhoto(file : File) {
+    const index = this.selectedFiles.indexOf(file);
+    console.log('🚀 ~ AnimauxEditComponent ~ removePhoto ~ index:', index);
+    if (index > -1) {
+      this.selectedFiles.splice(index, 1);
+    }
+  }
+
+  
   updateChat() {
-    this.appService.updateChat(this.chat!).subscribe({
+    const formData = new FormData();
+    formData.append('chat', JSON.stringify(this.chat));
+  
+    this.selectedFiles.forEach((file) => {
+      formData.append('photos', file, file.name);
+    });
+  
+    this.appService.updateChat(this.chat!.id, formData).subscribe({
       error: (error) => {
         console.error('error:', error);
-        if (error?.error?.message) {
-          this.toastr.error(
-            error.error.message,
-            'Erreur de mise à jour du chat'
-          );
-        } else {
-          this.toastr.error('Erreur de mise à jour du chat');
-        }
+        this.toastr.error('Erreur de mise à jour du chat');
       },
       complete: () => {
         this.toastr.success('Chat mis à jour avec succès');

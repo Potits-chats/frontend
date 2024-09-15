@@ -11,6 +11,7 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { PaginatorState } from 'primeng/paginator';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-animaux-list',
@@ -32,6 +33,7 @@ export class AnimauxListComponent {
   chats: Chat[] = [];
   favoris: Favori[] = [];
   associations: Association[] = [];
+  s3Url = environment.s3Url;
   private subscriptions = new Subscription();
 
 

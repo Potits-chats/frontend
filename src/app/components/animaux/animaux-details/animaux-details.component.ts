@@ -10,6 +10,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '@auth0/auth0-angular';
 import { UserService } from '../../../services/user.service';
 import { Subscription, firstValueFrom } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-animaux-details',
@@ -31,6 +32,7 @@ export class AnimauxDetailsComponent {
   isEditMode: boolean = false;
   isAuthenticated: boolean = false;
   private subscriptions = new Subscription();
+  s3Url = environment.s3Url;
 
   constructor(
     private route: ActivatedRoute,
@@ -69,25 +71,6 @@ export class AnimauxDetailsComponent {
     });
   }
 
-  updateChat() {
-    this.appService.updateChat(this.chat!).subscribe({
-      error: (error) => {
-        console.error('error:', error);
-        if (error?.error?.message) {
-          this.toastr.error(
-            error.error.message,
-            'Erreur de mise à jour du chat'
-          );
-        } else {
-          this.toastr.error('Erreur de mise à jour du chat');
-        }
-      },
-      complete: () => {
-        this.toastr.success('Chat mis à jour avec succès');
-        this.isEditMode = false;
-      },
-    });
-  }
   getFavs() {
     const favSubscription = this.appService.getFavorisByUser().subscribe({
       next: (favoriIds: number[]) => {

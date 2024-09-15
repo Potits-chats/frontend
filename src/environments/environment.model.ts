@@ -13,4 +13,5 @@ export interface Environment {
   api: {
     serverUrl: string;
   };
+  s3Url: string;
 }

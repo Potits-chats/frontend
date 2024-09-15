@@ -32,10 +32,10 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <div class="relative col-span-1 md:col-span-2">
-                <img [src]="chat.photos[0].url" class="object-cover w-full h-56 md:h-auto rounded shadow-lg" alt="" />
+                <img [src]="s3Url + chat.photos[0].url" class="object-cover w-full h-56 md:h-auto rounded shadow-lg" alt="" />
             </div>
             <div *ngFor="let photo of chat.photos.slice(1); let i = index" class="relative">
-                <img [src]="photo.url" class="object-cover w-full h-48 rounded shadow-lg" alt="" />
+                <img [src]="s3Url + photo.url" class="object-cover w-full h-48 rounded shadow-lg" alt="" />
             </div>
         
         </div>
