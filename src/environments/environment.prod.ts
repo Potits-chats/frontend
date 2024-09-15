@@ -15,4 +15,5 @@ export const environment: Environment = {
   api: {
     serverUrl: 'https://api.potits-chats.com',
   },
+  s3Url: 'https://potits-chats.s3.eu-west-3.amazonaws.com/public/',
 };

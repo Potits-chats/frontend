@@ -68,13 +68,30 @@ export class AppService {
     );
   }
 
-  updateChat(chat: Chat): Observable<Chat> {
-    return this.http.put(this.api + '/chats/' + chat.id, chat).pipe(
+  updateChat(id: number, formData: any): Observable<any> {
+    return this.http.put(this.api + `/chats/${id}`, formData).pipe(
       map((res: any) => res),
       share(),
       take(1)
     );
   }
+
+  createChat(formData: FormData): Observable<any> {
+    return this.http.post(this.api + '/chats', formData).pipe(
+      map((res: any) => res),
+      share(),
+      take(1)
+    );
+  }
+
+  deleteChatPhoto(photoName: string): Observable<any> {
+    return this.http.delete(this.api + `/files/${photoName}`).pipe(
+      map((res: any) => res),
+      share(),
+      take(1)
+    );
+  }
+
 
   getAllAsso(): Observable<Association[]> {
     return this.http.get(this.api + '/associations').pipe(

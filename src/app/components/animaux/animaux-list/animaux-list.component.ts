@@ -11,6 +11,8 @@ import { AuthService } from '@auth0/auth0-angular';
 import { Subscription, firstValueFrom } from 'rxjs';
 import { PaginatorState } from 'primeng/paginator';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { environment } from 'src/environments/environment';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-animaux-list',
@@ -32,6 +34,7 @@ export class AnimauxListComponent {
   chats: Chat[] = [];
   favoris: Favori[] = [];
   associations: Association[] = [];
+  s3Url = environment.s3Url;
   private subscriptions = new Subscription();
 
 
@@ -53,7 +56,8 @@ export class AnimauxListComponent {
     private toastr: ToastrService,
     private fb: FormBuilder,
     public auth: AuthService,
-    @Inject(DOCUMENT) private doc: Document
+    @Inject(DOCUMENT) private doc: Document,
+    public userService: UserService,
   ) {
     this.form = this.fb.group({
       ville: [''],

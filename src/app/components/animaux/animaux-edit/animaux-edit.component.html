@@ -1,0 +1,228 @@
+<div *ngIf="chat" class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+    <div class="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
+        <div>
+            <p class="inline-block px-3 py-px mb-4 text-xs font-semibold tracking-wider text-teal-900 uppercase rounded-full bg-teal-accent-400">
+                Catégorie : Chat
+            </p>
+        </div>
+
+        <button *ngIf="!isCreationMode" (click)="updateChat()" 
+            class="flex mx-auto mt-16 py-2 px-8 border-0 focus:outline-none rounded text-lg bg-orange-700 text-white hover:bg-orange-800 active:bg-orange-600 active:text-white focus-visible:outline-orange-700">
+            Mettre à jour
+        </button>
+    
+        <button *ngIf="isCreationMode"
+            (click)="saveChat()"
+            class="flex mx-auto mt-16 py-2 px-8 focus:outline-none rounded text-lg bg-orange-700 text-white hover:bg-orange-800 active:bg-orange-600 active:text-white focus-visible:outline-orange-700"
+            [disabled]="selectedFiles.length === 0"
+            [title]="selectedFiles.length === 0 ? 'Il faut ajouter au moins une image avant de créer ou de mettre à jour.' : ''"
+        >
+            Créer
+        </button>
+
+        <div class="flex justify-center py-8">
+            <h1 class="max-w-lg mb-6 font-sans text-2xl font-bold leading-none tracking-tight text-gray-900 sm:text-2xl md:mx-auto">
+                <input [(ngModel)]="chat.nom" placeholder="Nom du chat" name="nom" class="block w-full text-xl text-center rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6">
+            </h1>
+        </div>
+    </div>
+
+    <div class="grid max-w-screen-lg gap-8 lg:grid-cols-2 sm:mx-auto">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div *ngIf="!isCreationMode">
+              <div *ngIf="chat.photos">
+                <div *ngFor="let photo of chat.photos" class="relative">
+                  <img *ngIf="photo.url" [src]="s3Url + photo.url" class="object-cover w-full h-48 rounded shadow-lg" alt="" />
+                  <div *ngIf="photo.url" class="absolute right-0 bottom-0 mb-2 mr-2 space-x-2">
+                    <button (click)="removePhotoOnline(photo.url)" class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 focus:outline-none">
+                      Supprimer
+                      <fa-icon [icon]="faTrash"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <div>
+              <div *ngFor="let file of selectedFiles" class="relative">
+                <img [src]="getFileUrl(file)" class="object-cover w-full h-48 rounded shadow-lg" alt="" />
+                <div class="absolute right-0 bottom-0 mb-2 mr-2 space-x-2">
+                  <button (click)="removePhoto(file)" class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-1.5 focus:outline-none">
+                    Supprimer
+                    <fa-icon [icon]="faTrash"></fa-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Bouton Rajouter des images -->
+            <div class="col-span-1 md:col-span-2">
+              <input type="file" (change)="onFilesSelected($event)" multiple hidden #fileInputAdd>
+              <button (click)="fileInputAdd.click()" class="button-class">
+                Rajouter des images
+                <fa-icon [icon]="faUpload"></fa-icon>
+              </button>
+            </div>
+          </div>
+          
+
+
+
+        
+        <div class="flex flex-col justify-center">
+            <div class="pb-4 mb-4 border-b">
+                <label class="mb-2 block text-sm font-medium leading-5 text-gray-900">
+                    Sexe :
+                </label>
+                <div>
+                    <fieldset class="mt-4">
+                        <div class="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                            <div class="flex items-center">
+                                <input id="male" name="sexe" type="radio" checked=""  
+                                [(ngModel)]="chat.sexe" [value]="'MALE'"
+                                    class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600">
+                                <label for="male" class="ml-3 block text-sm font-medium leading-6 text-gray-900">
+                                    Male
+                                    <fa-icon [icon]="faMars" aria-label="Sexe" title="Male" class="ml-2"
+                                style="color: Dodgerblue;"></fa-icon>
+                                 </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="sms" name="sexe" type="radio"
+                                [(ngModel)]="chat.sexe" [value]="'FEMELLE'"
+                                    class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" >
+                                <label for="sms" class="ml-3 block text-sm font-medium leading-6 text-gray-900">
+                                    Femelle <fa-icon [icon]="faVenus" aria-label="Sexe" title="Femelle" class="ml-2"
+                                    style="color: fuchsia;"></fa-icon>
+                                </label>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="pb-4 mb-4 border-b">
+                <label class="mb-2 block text-sm font-medium leading-5 text-gray-900">
+                    Age :
+                </label>
+                <p class="text-sm text-gray-900">
+                    J'ai
+                    <input [(ngModel)]="chat.age"  class="text-center rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:leading-6"
+                        type="number" min="0" max="50" />
+                    ans
+                </p>
+
+            </div>
+
+            <div *ngIf="chat.race" class="pb-4 mb-4 border-b">
+                <label class="mb-2 block text-sm font-medium leading-5 text-gray-900">
+                    Race :
+                </label>
+                <p class="text-sm text-gray-900">
+                   Je suis un {{chat.race}}
+                </p>
+            </div>
+
+            <div class="pb-4 mb-4 border-b">
+                <label class="mb-2 block text-sm font-medium leading-5 text-gray-900">
+                    Je m'entends :
+                </label>
+
+                <div>
+                    <div>
+                        <!-- Entente avec les autres chats -->
+                        <label>
+                            <input type="radio" name="ententeChat" [(ngModel)]="chat.ententeChat" [value]="true"/>
+                            Avec les autres chats
+                        </label>
+
+                        <label>
+                            <input type="radio" name="ententeChat" [(ngModel)]="chat.ententeChat" [value]="false"/>
+                            Pas avec les autres chats ❌
+                        </label>
+                    </div>
+
+                    <div>
+                        <!-- Entente avec les chiens -->
+                        <label>
+                            <input type="radio" name="ententeChien" [(ngModel)]="chat.ententeChien" [value]="true" />
+                            Avec les chiens
+                        </label>
+
+                        <label>
+                            <input type="radio" name="ententeChien" [(ngModel)]="chat.ententeChien" [value]="false" />
+                            Pas avec les chiens ❌
+                        </label>
+                    </div>
+
+                    <div>
+                        <!-- Entente avec les enfants -->
+                        <label>
+                            <input type="radio" name="ententeEnfant" [(ngModel)]="chat.ententeEnfant" [value]="true"/>
+                            Avec les enfants
+                        </label>
+
+                        <label>
+                            <input type="radio" name="ententeEnfant" [(ngModel)]="chat.ententeEnfant" [value]="false"/>
+                            Pas avec les enfants ❌
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div *ngIf="!isCreationMode">
+                <label class="mb-2 block text-sm font-medium leading-5 text-gray-900">
+                    Association :
+                </label>
+                <p class="text-sm text-gray-900">
+                    Je suis actuellement chouchouté par l'association
+                    <a class="text-orange-600 hover:text-orange-800" [routerLink]="'/associations/'+chat.association.id">{{ chat.association.nom }}</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- New description block -->
+    <div class="max-w-screen-lg mt-8 md:mx-auto lg:max-w-screen-lg md:mt-12">
+        <label class="mb-2 block text-lg font-medium leading-5 text-gray-900">Description :</label>
+
+        <editor modelEvents="change input undo redo setcontent closewindow"
+            ignoreEvents="onMouseEnter,onMouseLeave,onMouseOut,onMouseMove"
+            [(ngModel)]="chat.description" [init]="{
+      
+      base_url: '/tinymce',
+      height: 500,
+      menubar: false,
+      plugins: [
+      ],
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ],
+      
+      toolbar:
+        'undo redo | formatselect | bold italic backcolor | \
+        alignleft aligncenter alignright alignjustify | \
+        bullist numlist outdent indent | removeformat | help'
+    }"></editor>
+    </div>
+
+    <button (click)="updateChat()" *ngIf="!isCreationMode"
+        class="flex mx-auto mt-16 py-2 px-8 border-0 focus:outline-none rounded text-lg bg-orange-700 text-white hover:bg-orange-800 active:bg-orange-600 active:text-white focus-visible:outline-orange-700">
+        Mettre à jour
+    </button>
+    <button *ngIf="isCreationMode"
+        (click)="saveChat()"
+        class="flex mx-auto mt-16 py-2 px-8 border-0 focus:outline-none rounded text-lg bg-orange-700 text-white hover:bg-orange-800 active:bg-orange-600 active:text-white focus-visible:outline-orange-700"
+        [disabled]="selectedFiles.length === 0"
+        [title]="selectedFiles.length === 0 ? 'Il faut ajouter au moins une image avant de créer ou de mettre à jour.' : ''"
+    >
+        Créer
+    </button>
+
+</div>
